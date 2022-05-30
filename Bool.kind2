@@ -10,12 +10,12 @@ Bool: Type
 // And 
 (Bool.and a: Bool b: Bool): Bool 
  (Bool.and False b) = False 
- (Bool.and True True) = True 
+ (Bool.and True b) = b 
 
 // Or 
 (Bool.or a: Bool b: Bool): Bool 
   (Bool.or True b) = True 
-  (Bool.or False False) = False 
+  (Bool.or False b) = b
 
 // Equal
 (Bool.equal a: Bool b: Bool): Bool 
