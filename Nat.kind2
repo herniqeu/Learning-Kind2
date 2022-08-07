@@ -1,44 +1,20 @@
-Nat : Type 
- Zero : Nat 
- (Succ n: Nat): Nat 
+Nat: Type
+Nat.zero: Nat
+Nat.succ(pred:Nat): Nat 
 
-// Increment 
-(Nat.increment n: Nat): Nat 
-  (Nat.increment Zero) = (Succ Zero)
-  (Nat.increment (Succ n)) = (Succ n)
+// Increment
+Nat.inc (x: Nat): Nat 
+Nat.inc x = (Nat.succ x)
 
-// Decrement 
-(Nat.decrement n: Nat): Nat 
-   (Nat.decrement Zero) = Zero 
-   (Nat decrement Succ(n)) = n
+// Decrement
+Nat.dec (x: Nat): Nat 
+Nat.dec Nat.zero = Nat.zero
+Nat.dec (Nat.succ x) = x
 
-// Is Zero 
-(Nat.Is.zero n: Nat): Bool 
-  (Nat.Is.zero Zero) = Bool.True 
-  (Nat.Is.zero (Succ n)) = Bool.False 
+Bool: Type
+Bool.true : Bool
+Bool.false : Bool 
 
-// Doubles a number 
-(Nat.Dbl n: Nat): Nat 
- (Nat.Dbl Zero) = Zero 
- (Nat.Dbl (Succ n)) = (Succ (Succ (Nat.Dbl n)))
-
-(Nat.add a: Nat b: Nat): Nat 
- (Nat.add Zero b) = b 
- (Nat.add (Succ a) b) = Succ (Nat.add a b)
-
-(Nat.mul a: Nat b: Nat): Nat 
-  (Nat.mul Zero b) = Zero 
-  (Nat.mul (Succ a) b) = Nat.add ( (Nat.mul a b) b)
-
-(Nat.sub a: Nat b: Nat): Nat 
- (Nat (Succ a) Zero) = (Succ a)
- (Nat (Succ a) b) = Nat.sub(a b) 
-
-(Nat.factorial a: Nat): Nat
- (Nat.factorial Zero) = Succ Zero 
- (Nat.factorial (Succ a)) = Nat.mul(a (Nat.factorial a))
-
-(Nat.division a: Nat): Nat 
- (Nat.division Zero b) = Zero 
- (Nat.division a b) = Succ(Nat.division(a b) b) 
- 
+Bool.is_zero (x: Nat): Bool 
+Bool.is_zero (Nat.zero) = Bool.true 
+Bool.is_zero x = Bool.false 
