@@ -108,10 +108,10 @@ Problems.p14 a (List.cons a head tail) = head
 // Returns the list without the first element
 //Problems.p15<A: Type>(xs: List<A>): List<A>
 
-Problems.p15 <a> (xs: List a) : List a 
-Problems.p15 a (List.cons a head tail) = tail 
+Problems.p15 <a> (xs: List a) : List a
+Problems.p15 a (List.cons xs head (List.nil xss)) = List.nil 
+Problems.p15 a (List.cons xs head tail) = tail  
 
- 
 // Returns the length of a list
 //Problems.p16<A: Type>(xs: List<A>): Nat
 
@@ -121,10 +121,15 @@ Problems.p16 a (List.cons head tail) = Nat.succ (Problems.p16 a tail)
 
 // Concatenates two lists
 //Problems.p17<A: Type>(xs: List<A>, ys: List<A>): List<A>
+Problems.p17 <a> (xs: List a) (ys: List a) : List a
+Problems.p17 a0 (List.nil a1) xs = xs 
+Problems.p17 a0 (List.cons a1 head tail) ys = List.cons head (Problems.p17 tail ys)
 
 // Applies a function to all elements of a list
 //Problems.p18<A: Type, B: Type>(fn: A -> B, xs: List<A>): List<B>
-//  ?a
+Problems.p18 <a> <b> (fn : a -> b) (xs: List a) : List b 
+Problems.p18 a b fn (List.nil a1) = (List.nil b)
+Problems.p18 a b fn (List.cons a1 head tail) = List.cons (fn head) (Problems.p18 fn tail
 
 // Returns the same list, with the order reversed
 //Problems.p19<A: Type>(xs: List<A>): List<A>
@@ -137,7 +142,10 @@ Problems.p16 a (List.cons head tail) = Nat.succ (Problems.p16 a tail)
 
 // Returns the smallest element of a List
 //Problems.p21(xs: List<Nat>): Nat
-//  ?a
+Problems.p20 (xs: (List Nat)) : (Maybe Nat) 
+Problems.p20 (List.nil a) = Maybe.none 
+Problems.p20 (List.cons a head (List.nil Nat)) = Maybe.some head 
+Problems.p20 (List.cons a head (List.cons b tail.head tail.tail)) = Problems.p20 (List.cons (Nat.min head tail.head) tail.tail)
 
 // Returns the same list without the smallest element
 //Problems.p22(xs: List<Nat>): List<Nat>
@@ -145,7 +153,9 @@ Problems.p16 a (List.cons head tail) = Nat.succ (Problems.p16 a tail)
 
 // Returns the same list, in ascending order
 //Problems.p23(xs: List<Nat>): List<Nat>
-//  ?a
+Problems.p23 (xs: (List Nat)): (List Nat)
+Problems.p23  (List.nil xs) = List.nil Nat
+Problems.p23  xs = List.cons ((Maybe.extract (List.smallest xs) (Nat.zero))) (Problems.p23 ( List.delete_smallest xs))
 
 // -----------------------------------------------------------------------------
 
