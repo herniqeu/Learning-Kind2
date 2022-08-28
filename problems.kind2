@@ -158,7 +158,6 @@ Problems.p23  (List.nil xs) = List.nil Nat
 Problems.p23  xs = List.cons ((Maybe.extract (List.smallest xs) (Nat.zero))) (Problems.p23 ( List.delete_smallest xs))
 
 // -----------------------------------------------------------------------------
-
 // ::::::::::::::
 // :: Theorems ::
 // ::::::::::::::
@@ -236,30 +235,50 @@ Problems.t17 n Nat.zero = (Problems.t57 n)
 Problems.t17 Nat.zero m = (Equal.mirror (Problems.t57 m))
 Problems.t17 n m = Equal.mirror (Problems.t17 m n)
 
-Problems.t18 (n: Nat) : (Equal Nat (Nat.add n n) (Nat.double n))
-Problems.t18 Nat.zero = Equal.refl 
-Problems.t18 (Nat.succ n) = 
+//Problems.t18 (n: Nat) : (Equal Nat (Nat.add n n) (Nat.double n))
+//Problems.t18 Nat.zero = Equal.refl 
+//Problems.t18 (Nat.succ n) = ?
 
-//Problems.t19 (n: Nat) : (Equal Bool (Nat.ltn n (Nat.succ n)) Bool.true)
-//criar Nat.ltn
+Nat.ltn (a: Nat) (b: Nat) : Bool
+Nat.ltn a Nat.zero = Bool.false 
+Nat.ltn Nat.zero b = Bool.true
+Nat.ltn (Nat.succ a) (Nat.succ b) = (Nat.ltn a b)
 
-//Problems.t20 (n: Nat) : (Equal Bool (Nat.gtn(Nat.succ n) n) Bool.true)
-//criar Nat.gnt
+Problems.t19 (n: Nat) : (Equal Bool (Nat.ltn n (Nat.succ n)) Bool.true)
+Problems.t19 Nat.zero = Equal.refl 
+Problems.t19 (Nat.succ n) = (Problems.t19 n)
 
+Nat.gtn (a: Nat) (b: Nat) : Bool 
+Nat.gtn Nat.zero b = Bool.false 
+Nat.gtn a Nat.zero = Bool.true 
+Nat.gtn (Nat.succ a) (Nat.succ b) = (Nat.gtn a b)
 
-//Problems.t21 (n: Nat) : (Equal Nat (Nat.sub n n)  0)
-//criar Nat.sub
+Problems.t20 (n: Nat) : (Equal Bool (Nat.gtn(Nat.succ n) n) Bool.true)
+Problems.t20 Nat.zero = Equal.refl 
+Problems.t20 (Nat.succ n) = (Problems.t20 n)
 
+Nat.sub (a: Nat) (b: Nat) : Nat 
+Nat.sub a Nat.zero = a 
+Nat.sub (Nat.succ a) (Nat.succ b) = (Nat.sub a b)
 
-Problems.t22 (n: Nat) (e: Equal n (Nat.succ(Nat.zero)))  : (Equal Nat (Nat.succ n) (Nat.succ(Nat.succ(Nat.zero))))
+Problems.t21 (n: Nat) : (Equal Nat (Nat.sub n n)  Nat.zero)
+Problems.t21 Nat.zero = Equal.refl
+Problems.t21 (Nat.succ n) = (Problems.t21 n)
 
-Problems.t23 (n: Nat) (m: Nat) (e: Equal (Nat.equal n m) Bool.true): (Equal n m)
+//Problems.t22 (n: Nat) (e: Equal n (Nat.succ(Nat.zero)))  : (Equal Nat (Nat.succ n) (Nat.succ(Nat.succ(Nat.zero))))
+// Equal.apply (x => Nat.succ x) e
 
+//Problems.t23 (n: Nat) (m: Nat) (e: Equal (Nat.equal n m) Bool.true): (Equal n m)
 
 //Problems.t24 (xs: List Nat) : (Equal Bool (Nat.gtn(List.length Nat (List.cons Nat (Nat.succ Nat.zero) xs)) Nat.zero) Bool.true)
 //criar Nat.gtn
 
-Problems.t25 (xs: List Nat) : (Equal (List Nat)   (List.map Nat Nat xs (x => x))  xs)
+//Problems.t25 (xs: List Nat) : (Equal (List Nat)   (List.map Nat Nat xs (x => x))  xs)
+//Problems.t25 (List.nil) = Equal.refl 
+//Problems.t25 xs = 
+// let ind = (Problems.t25 xs.tail)
+// let app = Equal.apply (List.cons xs.head) ind 
+// app
 
 Problems.t26 (xs: List Nat) (ys: List Nat): (Equal Nat (Nat.add(List.length Nat (xs)) (List.length Nat(ys))) (List.length Nat (List.concat Nat (xs) (ys))))
 
