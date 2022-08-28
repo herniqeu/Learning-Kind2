@@ -157,7 +157,6 @@ Problems.p23 (xs: (List Nat)): (List Nat)
 Problems.p23  (List.nil xs) = List.nil Nat
 Problems.p23  xs = List.cons ((Maybe.extract (List.smallest xs) (Nat.zero))) (Problems.p23 ( List.delete_smallest xs))
 
-// -----------------------------------------------------------------------------
 // ::::::::::::::
 // :: Theorems ::
 // ::::::::::::::
@@ -235,9 +234,14 @@ Problems.t17 n Nat.zero = (Problems.t57 n)
 Problems.t17 Nat.zero m = (Equal.mirror (Problems.t57 m))
 Problems.t17 n m = Equal.mirror (Problems.t17 m n)
 
-//Problems.t18 (n: Nat) : (Equal Nat (Nat.add n n) (Nat.double n))
-//Problems.t18 Nat.zero = Equal.refl 
-//Problems.t18 (Nat.succ n) = ?
+Problems.t18 (n: Nat) : (Equal Nat (Nat.add n n) (Nat.double n))
+Problems.t18 Nat.zero = Equal.refl 
+Problems.t18 (Nat.succ n) = 
+ let app = Equal.apply (x => Nat.succ x) (Problems.t18 n)
+ let first = (Problems.t16 n n)
+ let ok =(Equal.chain first app)
+ Equal.apply (x => Nat.succ x) ok
+
 
 Nat.ltn (a: Nat) (b: Nat) : Bool
 Nat.ltn a Nat.zero = Bool.false 
@@ -265,22 +269,22 @@ Problems.t21 (n: Nat) : (Equal Nat (Nat.sub n n)  Nat.zero)
 Problems.t21 Nat.zero = Equal.refl
 Problems.t21 (Nat.succ n) = (Problems.t21 n)
 
-//Problems.t22 (n: Nat) (e: Equal n (Nat.succ(Nat.zero)))  : (Equal Nat (Nat.succ n) (Nat.succ(Nat.succ(Nat.zero))))
-// Equal.apply (x => Nat.succ x) e
+Problems.t22 (n: Nat) (e: Equal n (Nat.succ(Nat.zero)))  : (Equal Nat (Nat.succ n) (Nat.succ(Nat.succ(Nat.zero))))
+Problems.t22 n e = (Equal.apply (x => Nat.succ x) e)
 
 //Problems.t23 (n: Nat) (m: Nat) (e: Equal (Nat.equal n m) Bool.true): (Equal n m)
 
-//Problems.t24 (xs: List Nat) : (Equal Bool (Nat.gtn(List.length Nat (List.cons Nat (Nat.succ Nat.zero) xs)) Nat.zero) Bool.true)
-//criar Nat.gtn
+Problems.t24 (xs: List Nat) : (Equal Bool (Nat.gtn(List.length Nat (List.cons Nat (Nat.succ Nat.zero) xs)) Nat.zero) Bool.true)
+Problems.t24 (List.nil Nat) = Equal.refl 
+Problems.t24 xs = Equal.refl 
 
 //Problems.t25 (xs: List Nat) : (Equal (List Nat)   (List.map Nat Nat xs (x => x))  xs)
-//Problems.t25 (List.nil) = Equal.refl 
-//Problems.t25 xs = 
-// let ind = (Problems.t25 xs.tail)
-// let app = Equal.apply (List.cons xs.head) ind 
-// app
 
 Problems.t26 (xs: List Nat) (ys: List Nat): (Equal Nat (Nat.add(List.length Nat (xs)) (List.length Nat(ys))) (List.length Nat (List.concat Nat (xs) (ys))))
+Problems.t26 (List.nil Nat) ys = Equal.refl 
+Problems.t26 (List.cons Nat xs.head xs.tail) ys =
+ let ind = (Problems.t26 xs.tail ys) 
+ Equal.apply (x => Nat.succ x) ind
 
 Problems.t27 (xs: List Nat) : (Equal (List Nat) (List.reverse Nat (List.reverse Nat (xs))) xs)
 
