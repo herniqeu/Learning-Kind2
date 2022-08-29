@@ -1,0 +1,252 @@
+// Basic functions
+
+List.concat <a> (xs : List a) (ys List a) : List a 
+List.concat a (List.nil t) ys = ys 
+List.concat a (List.cons t head tail) ys = (List.cons a head (List.concat a tail ys))
+
+List.head <a> (xs: List a) : Maybe a 
+List.head a (List.nil t) = Maybe.none 
+List.head a (List.cons t head tail) = Maybe.some head
+
+List.tail <a> (xs: List a) : List a 
+List.tail a (List.nil t) = List.nil 
+List.tail a (List.cons t head tail) = tail 
+
+List.init <a> (xs: List a) : List a
+List.init a (List.nil t) = List.nil 
+List.init a (List.cons t head (List.nil t2)) = List.nil 
+List.init a (List.cons t x xs) = List.cons x (List.init xs)
+
+List.uncons <a> (xs: List a) : Maybe List a
+List.uncons a List.nil = Maybe.none 
+List.uncons a (List.cons t x xs) = (Maybe.some (Pair x xs))
+
+List.singleton <a> (xs : a) : List a 
+List.singleton xs = (List.cons t x List.nil)
+
+List.null <a> (xs: List a) : Bool 
+List.null a List.nil = Bool.true 
+List.null a (List.cons t x xs) = Bool.false 
+
+List.length <a> (xs: List a) : Nat 
+List.length a List.nil = Nat.zero
+List.length a List.cons x xs = Nat.succ(List.length xs)
+
+// List transformations
+
+List.map <a> <b> (xs: List a) (f: a -> b) : List b 
+List.map a b (List.nil t) f = List.nil 
+List.map a b (List.cons t head tail) f = List.cons (f head) (List.map tail f)
+
+List.reverse <a> (xs: List a) : List a 
+List.reverse a xs = List.reverse.go xs List.nil 
+ List.reverse.go <a> (xs: List a) (ys: List a) : List a 
+ List.reverse.go a (List.nil t) ys = ys 
+ List.reverse.go a (List.cons t x xs) ys = List.reverse.go xs (List.cons x ys)
+
+List.intersperse <a> (sep: a) (xs: List a) : List a 
+List.intersperse a sep (List.nil xa) = List.nil 
+List.intersperse a sep (List.cons xa xh (List.nil xa_)) = List.pure xh 
+List.intersperse a sep (List.cons xa xh xt) = List.cons xh (List.cons sep (List.intersperse sep xt))
+
+List.intercalate <a> (xs : List a) (xss : List a) : List a 
+List.intercalate a xs xss = List.concat (Intersperse xs xss)
+
+//transpose
+//subsequences
+//permutations
+
+// Reducing lists (folds)
+
+List.foldl <a> (f: a -> a) (n: a) (xs: List a) : a
+List.foldl a f n List.nil = n
+List.foldl a f n (List.cons x xs) = List.foldl a f (f n x) xs
+
+// List.foldl'
+
+List.foldl1 <a> (f: a -> a) (n: a) (xs: List a) : Maybe a 
+List.foldl1 a f  List.nil = Maybe.none 
+List.foldl1 a f (List.cons x xs) = (List.foldl a f x xs)
+
+// List.foldl1'
+
+List.foldr <a> (f: a-> a) (n: a) (xs: List a) = a 
+List.foldr a f n List.nil = n 
+List.foldr a f n (List.cons x xs) = (f x (foldr a f n xs))
+
+List.foldr1 <a> (f: a -> a) (xs : List a) = a
+List.foldr1 a f List.nil = List.nil 
+List.foldr1 a f (List.cons x xs) = (List.foldr a f x xs) 
+
+// Special Folds
+
+List.flatten <a> (xs: List a) : List a
+List.flatten a List.nil = List.nil 
+List.flatten a (List.cons x xs) = List.cons x (List.flatten a xs)
+
+// List.concatMap
+
+List.and (xs: List Bool) : Bool 
+List.and List.nil = Bool.false 
+List.and (List.cons x xs) = (List.and_Aux x xs)
+ List.and_Aux Bool.true xs = (List.and xs) 
+ List.and_Aux Bool.false xs = Bool.false 
+
+List.or (xs: List Bool) : Bool 
+List.or (List.cons x xs) = (List.or_Aux x xs) 
+ List.or_Aux (Bool.true xs) = Bool.true 
+ List.or_Aux (Bool.false xs) = List.or xs
+
+// List.any
+
+// List.all
+sum 
+
+List.sum (List Nat) : Nat 
+List.sum List.nil : Nat.zero 
+List.sum (List.cons x xs) = Nat.add x (List.sum xs)
+
+List.product (List Nat) : Nat 
+List.product List.nil : Nat.succ (Nat.zero)
+List.product (List.cons x xs) = Nat.mul x (List.product xs)
+
+List.maximum (List: Nat) : Maybe Nat
+List.maximum List.Nil = Maybe.none
+List.maximum (List.cons x List.Nil) = x
+MaximumAux (a: Bool) (x1: Nat) (x2: Nat) (xs: List Nat) = List Nat
+ MaximumAux Bool.true x1 x2 xs = List.maximum (List.cons x1 xs) 
+ MaximumAux Bool.false x1 x2 xs = List.maximum (List.cons x2 xs) 
+List.maximum (List.cons x1 (List.cons x2 xs)) = (MaximumAux (Nat.gtn x1 x2) x1 x2 xs)
+
+List.minimum (List: Nat) : Maybe Nat 
+List.minimum List.nil = Maybe.none
+Minimum Aux (a: Bool) (x1: Nat) (x2: Nat) (xs: List Nat) = List Nat 
+ MinimumAux Bool.true x1 x2 xs = List.minimum (List.cons x1 xs) 
+ MinimumAux Bool.false x1 x2 xs = List.maximum (List.cons x2 xs) 
+List.maximum (List.cons x1 (List.cons x2 xs)) = (MinimumAux (Nat.ltn x1 x2) x1 x2 xs) 
+
+List.scanl (f: a -> b) (n: a) (xs : List a) : List b 
+List.scanl f n List.nil = List.cons n List.nil
+List.scanl f n (List.cons x xs) = List.cons n (List.scanl f (f n x) xs)
+
+List.scanl1 (f: a -> b) (xs : List a) : List b 
+List.scanl1 f List.nil = List.nil 
+List.scanl1 f (List.cons x xs) = List.scanl f x xs
+
+mapAccumL
+mapAccumR
+
+iterate
+iterate'
+replicate
+cycle
+
+unfoldr
+
+List.take <a> (n: Nat) (xs: List a) : List a 
+List.take a Nat.zero xs = List.nil 
+List.take a n List.nil = List.nil 
+List.take a (Nat.succ n) (List.cons x xs) = List.cons x (List.take a n xs) 
+
+List.drop <a> (n: Nat) (xs: List a) : List a 
+List.drop a Nat.zero xs = xs 
+List.drop a n List.nil = List.nil 
+List.drop a (Nat.succ n) (List.cons x x) = List.drop n xs
+
+List.splitat <a> (n: Nat) (xs: List a) : Pair a 
+List.splitat a n xs = Pair (List.take n xs) (List.drop n xs)
+
+List.takewhile <a> (f: a -> a) (xs: List a) = List a
+ TakewhileAux <a> (f: Bool) (x: a) (xs: List a) : List a
+ TakewhileAux a Bool.false f x xs = List.nil 
+ TakewhileAux a Bool.true f x xs = List.cons x (List.takewhile a f xs)
+List.takewhile a f (List.cons x xs) = (TakewhileAux a (f x) f x xs)
+
+List.dropwhile <a> (f: a -> a) (xs: List a) : List a 
+List.dropwhile a f List.nil = List.nil 
+ DropwhileAux <a> (b: Bool) (n: Nat) (x: a) (List: a) : List a
+ DropwhileAux a Bool.false n x xs = List.cons x xs
+ DropwhileAux a Bool.true n x xs = (List.dropwhile n xs)
+List.dropwhile a f (List.cons x xs) = (DropwhileAux a (f x) f x xs)
+
+// List.dropWhileEnd
+
+List.span (p: Nat) (xs: List Nat) : Pair Nat 
+List.span p xs = (Pair (List.takewhile p xs) (List.dropwhile p xs))
+
+// List.break
+stripPrefix
+group
+inits
+tails
+
+isPrefixOf
+isSuffixOf
+isInfixOf
+isSubsequenceOf
+
+elem 
+notelem
+lookup
+
+find
+filter 
+partition
+
+!!
+elemIndex
+findIndex
+findIndices
+
+zip
+zip3
+zip4
+zip5
+zip6
+zip7
+zipWith
+zipWith3
+zipWith4
+zipWith5
+zipWith6
+zipWith7
+unzip
+unzip3
+unzip4
+unzip5
+unzip6
+unzip7
+
+lines
+words
+unlines
+unwords
+
+nub
+delete
+\\
+union
+intersect
+
+sort
+sortOn
+insert
+
+nubBy
+deleteBy
+deleteFirstsBy
+unionBy
+intersectBy
+groupBy
+
+sortBy
+insertBy
+maximumBy
+minimumBy
+
+genericLenght
+genericTake
+genericDrop
+genericSplitAt
+genericIndex
+genericReplicate
