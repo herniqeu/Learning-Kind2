@@ -242,7 +242,6 @@ Problems.t18 (Nat.succ n) =
  let ok =(Equal.chain first app)
  Equal.apply (x => Nat.succ x) ok
 
-
 Nat.ltn (a: Nat) (b: Nat) : Bool
 Nat.ltn a Nat.zero = Bool.false 
 Nat.ltn Nat.zero b = Bool.true
